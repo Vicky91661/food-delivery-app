@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>hey bro</h1>
+    <div id="form"></div>
+    <input type="button" id="btn" value="GetDetails" onclick="loadFun()">
+    <script>
+        function loadFun(){
+            console.log("inside the fun")
+            loadDoc()
+        }
+        function loadDoc(){
+            console.log("inside the doc function")
+            const url ="https://webapps.tekstac.com/AllDetails/EmployeeServlet";
+            const request = getRequestObject()
+            request.open('GET',url);
+            request.onreadystatechange=()=>{
+                if(request.readyState===4 && request.status ===200){
+                    const data = request.responseXML
+                    const employees = data.querySelectorAll("Employee");
+
+                    // Iterating over each book
+                    employees.forEach(employe => {
+                        const EmployeeId = employe.querySelector("EmployeeId").textContent;
+                        const EmployeeName = employe.querySelector("EmployeeName").textContent;
+                        const Salary = employe.querySelector("Salary").textContent;
+                        console.log(`EmployeeId: ${EmployeeId}, EmployeeName: ${EmployeeName}, Salary: ${Salary}`);
+                    });
+                }
+            }
+            request.setRequestHeader("Accept","application/xml");
+            request.send()
+
+        }
+        function getRequestObject(){
+            const request = new XMLHttpRequest();
+            return request;
+        }
+    </script>
+</body>
+</html>
